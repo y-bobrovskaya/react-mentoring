@@ -10,8 +10,8 @@ export class Search extends React.Component {
 	}
 
 	onSubmit(e) {
-		alert(`${this.state.value} will be found soon.`);
 		e.preventDefault();
+		//TODO: redirect localhost/search/Search%20Query
 	}
 
 	onChange(e) {
