@@ -1,9 +1,5 @@
 import React from 'react'
 import { Logo } from '../components/Logo';
-import { Search } from '../components/Search';
-import { Movie } from '../components/Movie';
-import { Content } from '../components/Content';
-import Movies from './Movies';
 
 export class MyApp extends React.Component {
 	render() {
@@ -13,10 +9,7 @@ export class MyApp extends React.Component {
 					<Logo />
 				</header>
 				<main>
-					<Search />
-					{/*<Movie {...Movies[0]}/>*/}
-					{/*<Content movies={Movies}/>*/}
-					<Content movies={[]}/>
+					{this.props.children}
 				</main>
 				<footer>
 					<Logo />

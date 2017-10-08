@@ -9,7 +9,7 @@ module.exports = {
 	entry: {
 		client: [
 			'react-hot-loader/patch',
-			'./index',
+			'./index.jsx',
 		],
 		styles: './styles/styles.less'
 	},
