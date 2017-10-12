@@ -4,7 +4,7 @@ import { Logo } from '../components/Logo';
 export class MyApp extends React.Component {
 	render() {
 		return (
-			<div>
+			<div className="page-wrapper">
 				<header>
 					<Logo />
 				</header>

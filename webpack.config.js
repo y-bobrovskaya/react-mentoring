@@ -9,7 +9,7 @@ module.exports = {
 	entry: {
 		client: [
 			'react-hot-loader/patch',
-			'./index.jsx',
+			'./index',
 		],
 		styles: './styles/styles.less'
 	},
@@ -65,7 +65,6 @@ module.exports = {
 		}),
 		new HtmlWebpackPlugin({
 			title: 'Test',
-			hash: true,
 			template: './index.html'
 		}),
 		new ExtractTextPlugin({

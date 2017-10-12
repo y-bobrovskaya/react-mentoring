@@ -3,9 +3,9 @@ import ReactDom from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { AppContainer } from 'react-hot-loader';
 import { MyApp } from './app';
-//import { Content } from '../components/Content';
-//import { Movie } from '../components/Movie';
-import Search from '../components/Search';
+import SearchPage from '../pages/SearchPage';
+import MoviePage from '../pages/MoviePage';
+import IndexPage from '../pages/IndexPage';
 
 const render = () => {
 	ReactDom.render(
@@ -13,8 +13,9 @@ const render = () => {
 			<AppContainer>
 				<MyApp>
 					<Switch>
-						<Route exact path="/" component={Search} />
-						<Route path="/search/:query" component={Search} /> {/* doesn't work*/}
+						<Route exact path="/" component={IndexPage} />
+						<Route path="/search/:query" component={SearchPage} />
+						<Route path="/movie/:title" component={MoviePage} />
 					</Switch>
 				</MyApp>
 			</AppContainer>
