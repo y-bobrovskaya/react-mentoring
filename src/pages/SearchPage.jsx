@@ -53,9 +53,14 @@ class SearchPage extends React.Component {
 	}
 
 	render() {
+		let searchProps = {
+			value: this.state.value,
+			selectedSearchType: this.state.selectedSearchType
+		};
+
 		return (
 			<div>
-				<Search state={this.state} onChange={this.onChange} onSearchTypeChange={this.onSearchTypeChange} onSubmit={this.onSubmit}></Search>
+				<Search {...searchProps} state={this.state} onChange={this.onChange} onSearchTypeChange={this.onSearchTypeChange} onSubmit={this.onSubmit} />
 				{this.state.movies.length
 					?
 					<div className="row">
@@ -64,7 +69,7 @@ class SearchPage extends React.Component {
 					</div>
 					: ''
 				}
-				<Content movies={this.state.movies}></Content>
+				<Content movies={this.state.movies} />
 			</div>
 		)
 	}

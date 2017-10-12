@@ -47,9 +47,9 @@ class MoviePage extends React.Component {
 	render() {
 		return (
 			<div>
-				<Movie movie={this.state.movie} goSearch={this.goSearch}></Movie>
+				<Movie movie={this.state.movie} goSearch={this.goSearch} />
 				<div>Films by {this.state.movie.director}</div>
-				<Content movies={this.state.movies}></Content>
+				<Content movies={this.state.movies} />
 			</div>
 		)
 	}

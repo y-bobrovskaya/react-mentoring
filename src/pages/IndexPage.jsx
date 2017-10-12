@@ -32,10 +32,15 @@ class IndexPage extends React.Component {
 	}
 
 	render() {
+		let searchProps = {
+			value: this.state.value,
+			selectedSearchType: this.state.selectedSearchType
+		};
+
 		return (
 			<div>
-				<Search state={this.state} onChange={this.onChange} onSearchTypeChange={this.onSearchTypeChange} onSubmit={this.onSubmit}></Search>
-				<Content movies={this.state.movies}></Content>
+				<Search {...searchProps} onChange={this.onChange} onSearchTypeChange={this.onSearchTypeChange} onSubmit={this.onSubmit} />
+				<Content movies={this.state.movies} />
 			</div>
 		)
 	}
