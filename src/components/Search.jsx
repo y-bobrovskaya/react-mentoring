@@ -1,33 +1,30 @@
 import React from 'react';
 
-export class Search extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {value: ''};
-
-		this.onSubmit = this.onSubmit.bind(this);
-		this.onChange = this.onChange.bind(this);
-	}
-
-	onSubmit(e) {
-		alert(`${this.state.value} will be found soon.`);
-		e.preventDefault();
-	}
-
-	onChange(e) {
-		this.setState({value: e.target.value});
-	}
-
+export default class Search extends React.Component {
 	render() {
 		return (
-			<form onSubmit={this.onSubmit} className="search-form">
-				<label htmlFor="search-field">Find your movie</label>
-				<input type="text" name="search-field" id="search-field" value={this.state.value} onChange={this.onChange}/>
-				<span>Search by</span>
-				<input type="radio" name="serching" id="title"/><label htmlFor="title">Title</label>
-				<input type="radio" name="serching" id="director"/><label htmlFor="director">Director</label>
-				<input type="submit" value="Submit"/>
-			</form>
+			<div>
+				<form onSubmit={this.props.onSubmit} className="search-form">
+					<label htmlFor="search-field">Find your movie</label>
+					<input type="text" name="search-field" id="search-field" value={this.props.value} onChange={this.props.onChange}/>
+					<span>Search by</span>
+					<input type="radio"
+						name="searchType"
+						id="title"
+						value="title"
+						checked={this.props.selectedSearchType === 'title'}
+						onChange={this.props.onSearchTypeChange}/>
+					<label htmlFor="title">Title</label>
+					<input type="radio"
+						name="searchType"
+						id="director"
+						value="director"
+						checked={this.props.selectedSearchType === 'director'}
+						onChange={this.props.onSearchTypeChange}/>
+					<label htmlFor="director">Director</label>
+					<input type="submit" value="Submit"/>
+				</form>
+			</div>
 		);
 	}
 }

@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
 	context: path.join(__dirname, 'src/client'),
@@ -9,7 +10,8 @@ module.exports = {
 		client: [
 			'react-hot-loader/patch',
 			'./index',
-		]
+		],
+		styles: './styles/styles.less'
 	},
 
 	output: {
@@ -37,6 +39,13 @@ module.exports = {
 			],
 		},
 			{
+				test: /\.less$/,
+				use: ExtractTextPlugin.extract({
+					fallback: 'style-loader',
+					use: ['css-loader', 'less-loader']
+				})
+			},
+			{
 				test: /\.css$/,
 				use: [
 					'style-loader',
@@ -56,8 +65,11 @@ module.exports = {
 		}),
 		new HtmlWebpackPlugin({
 			title: 'Test',
-			hash: true,
 			template: './index.html'
 		}),
+		new ExtractTextPlugin({
+			filename: 'styles.css',
+			allChunks: true
+		})
 	],
 };
