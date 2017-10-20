@@ -7,7 +7,7 @@ export const Content = function(props) {
 					{props.movies.map((movie) =>
 						<li key={movie.id}>
 							<a href={'/movie/' + movie.title}>
-								<img src={movie.picture.source} alt={movie.picture.alt}/>
+								<img src={'https://image.tmdb.org/t/p/w300' + movie.poster_path} alt={movie.title}/>
 								<div>
 									<span>{movie.title}</span>
 									<span>{movie.year}</span>

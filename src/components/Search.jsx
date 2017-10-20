@@ -10,18 +10,18 @@ export default class Search extends React.Component {
 					<span>Search by</span>
 					<input type="radio"
 						name="searchType"
-						id="title"
-						value="title"
-						checked={this.props.selectedSearchType === 'title'}
+						id="movie"
+						value="movie"
+						checked={this.props.selectedSearchType === 'movie'}
 						onChange={this.props.onSearchTypeChange}/>
-					<label htmlFor="title">Title</label>
+					<label htmlFor="movie">Movie</label>
 					<input type="radio"
 						name="searchType"
-						id="director"
-						value="director"
-						checked={this.props.selectedSearchType === 'director'}
+						id="tvshow"
+						value="tvshow"
+						checked={this.props.selectedSearchType === 'tvshow'}
 						onChange={this.props.onSearchTypeChange}/>
-					<label htmlFor="director">Director</label>
+					<label htmlFor="tvshow">TV show</label>
 					<input type="submit" value="Submit"/>
 				</form>
 			</div>

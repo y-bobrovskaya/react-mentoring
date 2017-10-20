@@ -14,7 +14,7 @@ class IndexPage extends React.Component {
 		this.state = {
 			value: this.props.match.params.query,
 			movies: [],
-			selectedSearchType: 'title'
+			selectedSearchType: 'movie'
 		};
 	}
 

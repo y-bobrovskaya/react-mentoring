@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import {withRouter} from 'react-router';
 import Search from '../components/Search';
 import {Content} from '../components/Content';
@@ -17,7 +18,7 @@ class SearchPage extends React.Component {
 		this.state = {
 			value: this.props.match.params.query,
 			movies: [],
-			selectedSearchType: 'title'
+			selectedSearchType: 'movie'
 		};
 
 		if (this.state.value) {
@@ -39,11 +40,24 @@ class SearchPage extends React.Component {
 	}
 
 	doSearch(query) {
-		let selectedSearchType = this.state.selectedSearchType;
+		let selectedSearchType = this.state.selectedSearchType.trim();
+		let queryUrl = selectedSearchType == 'movie'
+			? 'https://api.themoviedb.org/3/movie/popular?api_key=172283afd6dcc9211e5e1ee68cca7767&language=en-US&page=1'
+			: 'https://api.themoviedb.org/3/tv/popular?api_key=172283afd6dcc9211e5e1ee68cca7767&language=en-US&page=1';
 
-		this.state.movies = _.filter(Movies, function(movie) {
-			return _.includes(movie[selectedSearchType].trim().toLowerCase(), query.trim().toLowerCase());
-		});
+		axios
+			.get(queryUrl)
+			.then(res => {
+				console.log("res *** ----- ", res);
+				this.state.movies = _.filter(res.data.results, function(movie) {
+					// todo: map movies title-name
+					// todo: map Movie page
+					return _.includes(movie.title.trim().toLowerCase(), query.trim().toLowerCase());
+				});
+			})
+			.catch(err => {
+				console.log("err *** ----- ", err);
+			});
 	}
 
 	componentWillUpdate() {

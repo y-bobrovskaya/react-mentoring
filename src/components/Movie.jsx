@@ -4,7 +4,7 @@ export const Movie = (props) => (
 	<div className="info-wrapper">
 		<button onClick={props.goSearch}>Search</button>
 		<div className="row">
-			<img src={props.movie.picture.source} alt={props.movie.picture.alt}/>
+			<img src={'https://image.tmdb.org/t/p/w300' + props.movie.poster_path} alt={props.movie.picture.alt}/>
 			<div>
 				<h1>{props.movie.title}</h1>
 				<div>{props.movie.rating}</div>
