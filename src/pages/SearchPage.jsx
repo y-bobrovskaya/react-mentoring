@@ -17,8 +17,9 @@ class SearchPage extends React.Component {
 
 		this.state = {
 			value: this.props.match.params.query,
+			oldValue: null,
 			movies: [],
-			selectedSearchType: 'movie'
+			selectedSearchType: 'title'
 		};
 
 		if (this.state.value) {
@@ -27,7 +28,7 @@ class SearchPage extends React.Component {
 	}
 
 	onChange(e) {
-		this.setState({value: e.target.value});
+		this.setState({value: e.target.value, oldValue: this.state.value});
 	}
 
 	onSearchTypeChange(e) {
@@ -40,28 +41,38 @@ class SearchPage extends React.Component {
 	}
 
 	doSearch(query) {
+		// qs.stringify ?
+		console.log("do search query // ** --- ", query, this.state.oldValue);
 		let selectedSearchType = this.state.selectedSearchType.trim();
-		let queryUrl = selectedSearchType == 'movie'
-			? 'https://api.themoviedb.org/3/movie/popular?api_key=172283afd6dcc9211e5e1ee68cca7767&language=en-US&page=1'
-			: 'https://api.themoviedb.org/3/tv/popular?api_key=172283afd6dcc9211e5e1ee68cca7767&language=en-US&page=1';
+		let queryUrl = selectedSearchType == 'title'
+			? 'https://api.themoviedb.org/3/search/movie?api_key=172283afd6dcc9211e5e1ee68cca7767&language=en-US&query=' + query
+			: 'https://api.themoviedb.org/3/search/person?api_key=172283afd6dcc9211e5e1ee68cca7767&language=en-US&query=' + query;
 
 		axios
 			.get(queryUrl)
 			.then(res => {
-				console.log("res *** ----- ", res);
-				this.state.movies = _.filter(res.data.results, function(movie) {
-					// todo: map movies title-name
-					// todo: map Movie page
-					return _.includes(movie.title.trim().toLowerCase(), query.trim().toLowerCase());
-				});
+				console.log("res *** ----- ", res, res.data.results);
+				// todo: update Content mapping for director search
+				// todo: apply redux
+				this.setState({movies: res.data.results});
 			})
 			.catch(err => {
 				console.log("err *** ----- ", err);
 			});
 	}
 
-	componentWillUpdate() {
-		if (this.state.value) {
+	//componentWillUpdate(nextProps, nextState) {
+	//	console.log("componentWillUpdate ---- ", nextProps, nextState, this.state.value, this.state.oldValue);
+	//	//if (this.state.value && !this.state.movies) {
+	//	if (this.state.value && (this.state.value !== this.state.oldValue)) {
+	//		//this.setState({oldValue: this.state.value});
+	//		//this.doSearch(this.state.value);
+	//	}
+	//}
+
+	componentWillReceiveProps(nextProps) {
+		console.log("componentWillReceiveProps ---- ", nextProps, this.state.value, this.state.oldValue);
+		if (this.state.value !== this.state.oldValue) {
 			this.doSearch(this.state.value);
 		}
 	}
