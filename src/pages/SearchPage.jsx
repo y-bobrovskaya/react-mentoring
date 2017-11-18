@@ -100,4 +100,25 @@ class SearchPage extends React.Component {
 	}
 }
 
-export default withRouter(SearchPage);
+const mapStateToProps = state => ({
+  ...state.search,
+  value: state.value,
+  movies: state.results,
+  selectedSearchType: state.selectedSearchType,
+  
+  /*sortType: state.results.sortType,
+  sortFields: state.results.sortFields,
+  isPending: state.results.isPending,*/
+});
+
+const mapDispatchToProps = dispatch => ({
+  onSubmit: query => dispatch(searchFilms(query)), //  onSubmit ?..
+  onSearchTypeChange: type => dispatch(setQueryType(type)),
+  //onSortChange: type => dispatch(changeSort(type)),
+});
+
+const SearchPageConnected = connect(mapStateToProps, mapDispatchToProps)(withRouter(SearchPage));
+
+export default SearchPageConnected;
+
+//export default withRouter(SearchPage);
