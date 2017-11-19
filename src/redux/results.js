@@ -19,6 +19,7 @@ const sortByField = (results, field) => (
 );
 
 const results = (state = initialState, action) => {
+	console.log("results ---- action ", action, state);
   switch (action.type) {
     case RESULTS_FETCH_SUCCESS:
     case FILM_FETCH_SUCCESS:

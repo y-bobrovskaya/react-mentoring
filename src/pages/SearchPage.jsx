@@ -1,10 +1,16 @@
 import React from 'react';
 import axios from 'axios';
-import {withRouter} from 'react-router';
+//import {withRouter} from 'react-router';
+import {withRouter} from 'react-router-dom';
+import { connect } from 'react-redux';
+import _ from 'lodash';
+
+import {
+  doSearch 
+} from '../redux/searchActions';
 import Search from '../components/Search';
 import {Content} from '../components/Content';
 import {SortBy} from '../components/SortBy';
-import _ from 'lodash';
 import Movies from '../client/Movies';
 
 class SearchPage extends React.Component {
@@ -23,7 +29,8 @@ class SearchPage extends React.Component {
 		};
 
 		if (this.state.value) {
-			this.doSearch(this.state.value);
+			this.props.onSearch(this.state.value);
+			//this.doSearch(this.state.value);
 		}
 	}
 
@@ -40,40 +47,10 @@ class SearchPage extends React.Component {
 		this.props.history.push('/search/' + this.state.value);
 	}
 
-	doSearch(query) {
-		// qs.stringify ?
-		console.log("do search query // ** --- ", query, this.state.oldValue);
-		let selectedSearchType = this.state.selectedSearchType.trim();
-		let queryUrl = selectedSearchType == 'title'
-			? 'https://api.themoviedb.org/3/search/movie?api_key=172283afd6dcc9211e5e1ee68cca7767&language=en-US&query=' + query
-			: 'https://api.themoviedb.org/3/search/person?api_key=172283afd6dcc9211e5e1ee68cca7767&language=en-US&query=' + query;
-
-		axios
-			.get(queryUrl)
-			.then(res => {
-				console.log("res *** ----- ", res, res.data.results);
-				// todo: update Content mapping for director search
-				// todo: apply redux
-				this.setState({movies: res.data.results});
-			})
-			.catch(err => {
-				console.log("err *** ----- ", err);
-			});
-	}
-
-	//componentWillUpdate(nextProps, nextState) {
-	//	console.log("componentWillUpdate ---- ", nextProps, nextState, this.state.value, this.state.oldValue);
-	//	//if (this.state.value && !this.state.movies) {
-	//	if (this.state.value && (this.state.value !== this.state.oldValue)) {
-	//		//this.setState({oldValue: this.state.value});
-	//		//this.doSearch(this.state.value);
-	//	}
-	//}
-
 	componentWillReceiveProps(nextProps) {
-		console.log("componentWillReceiveProps ---- ", nextProps, this.state.value, this.state.oldValue);
 		if (this.state.value !== this.state.oldValue) {
-			this.doSearch(this.state.value);
+			//this.doSearch(this.state.value);
+			this.props.onSearch(this.state.value);
 		}
 	}
 
@@ -101,10 +78,10 @@ class SearchPage extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  ...state.search,
+  //...state.search,
   value: state.value,
   movies: state.results,
-  selectedSearchType: state.selectedSearchType,
+  selectedSearchType: state.selectedSearchType
   
   /*sortType: state.results.sortType,
   sortFields: state.results.sortFields,
@@ -112,12 +89,13 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onSubmit: query => dispatch(searchFilms(query)), //  onSubmit ?..
-  onSearchTypeChange: type => dispatch(setQueryType(type)),
+  onSearch: query => dispatch(doSearch(query)),
+  //onSearchTypeChange: type => dispatch(setQueryType(type)),
   //onSortChange: type => dispatch(changeSort(type)),
 });
 
-const SearchPageConnected = connect(mapStateToProps, mapDispatchToProps)(withRouter(SearchPage));
+const SearchPageConnected = withRouter(connect(mapStateToProps, mapDispatchToProps)(SearchPage));
+//const SearchPageConnected = connect(mapStateToProps, mapDispatchToProps)(SearchPage);
 
 export default SearchPageConnected;
 
