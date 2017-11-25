@@ -1,13 +1,11 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { AppContainer } from 'react-hot-loader';
 import createStore from '../redux/store';
 
 import { MyApp } from './app';
-import SearchPage from '../pages/SearchPage';
-import MoviePage from '../pages/MoviePage';
-import IndexPage from '../pages/IndexPage';
+import routes from '../routes';
 
 const storeInstance = createStore(window.PRELOADED_STATE || {});
 delete window.PRELOADED_STATE;
@@ -17,12 +15,7 @@ const render = (store) => {
 		<BrowserRouter>
 			<AppContainer>
 				<MyApp store={store}>
-					<Switch>
-						<Route exact path="/" component={IndexPage} />
-						<Route path="/search/:query" component={SearchPage} />
-						<Route path="/search/" component={SearchPage} />
-						<Route path="/movie/:title" component={MoviePage} />
-					</Switch>
+					{routes}
 				</MyApp>
 			</AppContainer>
 		</BrowserRouter>,

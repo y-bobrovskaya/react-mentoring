@@ -2,6 +2,7 @@ import React from 'react';
 
 export default class Search extends React.Component {
 	render() {
+		// todo: change on title/director
 		return (
 			<div>
 				<form onSubmit={this.props.onSubmit} className="search-form">

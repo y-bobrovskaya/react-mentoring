@@ -5,7 +5,8 @@ import {StaticRouter} from 'react-router-dom';
 
 import {Provider} from 'react-redux';
 import createStore from '../redux/store';
-import MyApp from '../client/app';
+import {MyApp} from '../client/app';
+import routes from '../routes';
 
 const app = Express();
 const port = 4300;
@@ -20,34 +21,34 @@ function handleRender(req, res) {
 	const store = createStore();
 	const context = {};
 	const app = (
-	<Provider store={store}>
 		<StaticRouter location={req.url} context={context}>
-			<MyApp />
-		</StaticRouter>
-	</Provider>);
+			<MyApp store={store}>
+				{routes}
+			</MyApp>
+		</StaticRouter>);
 
 	const html = renderToString(app);
 
 	// Send the rendered page back to the client
-	res.send(renderFullPage(html))
+	res.send(renderFullPage(html, {}))
 }
 
 function renderFullPage(html, preloadedState) {
 	return `
-    <!doctype html>
-    <html>
-      <head>
-        <title>Redux Universal Example</title>
-      </head>
-      <body>
-        <div id="root">${html}</div>
-        <script>
-        	window.PRELOADED_STATE = ${JSON.stringify(preloadedState.replace(/</g, '\\u003c'))}
+	<!DOCTYPE html>
+	<html>
+	 <head>
+	  <title>Redux Universal Example</title>
+	  <meta charset="utf-8">
+		 <base href="/">
+	 <link href="static/styles.css" rel="stylesheet"></head>
+	 <body>
+		 <div class="app-wrapper" id="app">${html}</div>
+		 <script>
+        	window.PRELOADED_STATE = ${JSON.stringify(preloadedState).replace(/</g, '\\u003c')}
         </script>
-        <script src="/static/bundle.js"></script>
-      </body>
-    </html>
-    `
+	 <script type="text/javascript" src="static/client.js"></script><script type="text/javascript" src="static/styles.js"></script></body>
+	</html>`
 }
 
 app.listen(port);

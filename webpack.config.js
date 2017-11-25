@@ -15,8 +15,8 @@ module.exports = {
 	},
 
 	output: {
-		path: path.join(__dirname, "built"),
-		filename: '[name].js',
+		path: path.join(__dirname, "built/static"),
+		filename: 'static/[name].js',
 	},
 
 	resolve: {
@@ -61,15 +61,14 @@ module.exports = {
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NamedModulesPlugin(),
 		new webpack.SourceMapDevToolPlugin({
-			filename: '[name].js.map',
-			exclude: ['vendor.js']
+			filename: 'static/[name].js.map'
 		}),
 		new HtmlWebpackPlugin({
 			title: 'Test',
 			template: './index.html'
 		}),
 		new ExtractTextPlugin({
-			filename: 'styles.css',
+			filename: 'static/styles.css',
 			allChunks: true
 		})
 	],
