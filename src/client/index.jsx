@@ -9,7 +9,8 @@ import SearchPage from '../pages/SearchPage';
 import MoviePage from '../pages/MoviePage';
 import IndexPage from '../pages/IndexPage';
 
-const storeInstance = createStore();
+const storeInstance = createStore(window.PRELOADED_STATE || {});
+delete window.PRELOADED_STATE;
 
 const render = (store) => {
 	ReactDom.render(
@@ -19,6 +20,7 @@ const render = (store) => {
 					<Switch>
 						<Route exact path="/" component={IndexPage} />
 						<Route path="/search/:query" component={SearchPage} />
+						<Route path="/search/" component={SearchPage} />
 						<Route path="/movie/:title" component={MoviePage} />
 					</Switch>
 				</MyApp>

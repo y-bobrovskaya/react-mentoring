@@ -1,7 +1,7 @@
 import React from 'react';
 import {withRouter} from 'react-router';
 import _ from 'lodash';
-import Movies from '../client/Movies';
+import {doSearchMovie} from '../redux/searchActions';
 import { Movie } from '../components/Movie';
 import {Content} from '../components/Content';
 
@@ -9,15 +9,18 @@ class MoviePage extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.goSearch = this.goSearch.bind(this);
+		//this.goSearch = this.goSearch.bind(this);
 
-		this.state = {
-			value: this.props.match.params.title,
-			movie: {},
-			movies: []
-		};
+		//this.state = {
+		//	value: this.props.match.params.title,
+		//	movie: {},
+		//	movies: []
+		//};
 
-		this.findMovie(this.state.value);
+		//this.findMovie(this.state.value);
+		if (this.props.match.params.title) {
+			this.props.onSearch(this.props.match.params.title);
+		}
 
 	}
 
@@ -54,5 +57,11 @@ class MoviePage extends React.Component {
 		)
 	}
 }
+
+const mapDispatchToProps = dispatch => ({
+	onSearch: (query) => dispatch(doSearchMovie(query, dispatch)),
+//	onQueryChange: (query, oldQuery) => dispatch(setQuery(query, oldQuery)),
+	//onSortChange: type => dispatch(changeSort(type)),
+});
 
 export default withRouter(MoviePage);
