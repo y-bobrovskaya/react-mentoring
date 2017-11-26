@@ -15,8 +15,8 @@ module.exports = {
 	},
 
 	output: {
-		path: path.join(__dirname, "built/static"),
-		filename: 'static/[name].js',
+		path: path.join(__dirname, 'built'),
+		filename: '[name].js',
 	},
 
 	resolve: {
@@ -61,14 +61,15 @@ module.exports = {
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NamedModulesPlugin(),
 		new webpack.SourceMapDevToolPlugin({
-			filename: 'static/[name].js.map'
+			filename: '[name].js.map'
 		}),
 		new HtmlWebpackPlugin({
-			title: 'Test',
+			title: 'Redux Universal Example',
+			filename: 'index.html',
 			template: './index.html'
 		}),
 		new ExtractTextPlugin({
-			filename: 'static/styles.css',
+			filename: 'styles.css',
 			allChunks: true
 		})
 	],

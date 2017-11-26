@@ -4,10 +4,13 @@
   "description": "",
   "scripts": {
     "webpack": "webpack",
+    "webpack-dev-server": "webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "babel-node src/server/server.js",
-    "build:back": "webpack --config webpack-back.config.js",
-    "build:front": "webpack --config webpack.config.js"
+    "serve": "webpack-dev-server --config webpack.client.config.js",
+    "build:back": "webpack --config webpack.server.config.js",
+    "build:front": "webpack --config webpack.client.config.js",
+    "build": "npm run build:front & npm run build:back",
+	"start": "cd built & node server & cd .."
   },
   "repository": {
     "type": "git",

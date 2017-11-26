@@ -1,4 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
+
+function encodeIdAndTitle(movie) {
+	return `${movie.id}-${movie.title.toLowerCase().replace(/[:.]/g, '').replace(/ /g, '-')}`;
+}
 
 export const Content = function(props) {
 	const moviesList = (
@@ -6,14 +11,14 @@ export const Content = function(props) {
 			?	<ul>
 					{props.movies.map((movie) =>
 						<li key={movie.id}>
-							<a href={'/movie/' + movie.title}>
+							<Link to={'/movie/' + encodeIdAndTitle(movie)}>
 								<img src={'https://image.tmdb.org/t/p/w300' + movie.poster_path} alt={movie.title}/>
 								<div>
 									<span>{movie.title}</span>
 									<span>{movie.year}</span>
 								</div>
 								<div>{movie.category}</div>
-							</a>
+							</Link>
 						</li>
 					)}
 				</ul>

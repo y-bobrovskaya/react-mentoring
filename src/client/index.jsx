@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { AppContainer } from 'react-hot-loader';
-import createStore from '../redux/store';
+import {createStoreInstance, initialState} from '../redux/store';
 
 import { MyApp } from './app';
 import routes from '../routes';
 
-const storeInstance = createStore(window.PRELOADED_STATE || {});
+const storeInstance = createStoreInstance(window.PRELOADED_STATE || initialState);
 delete window.PRELOADED_STATE;
 
 const render = (store) => {
@@ -15,7 +15,7 @@ const render = (store) => {
 		<BrowserRouter>
 			<AppContainer>
 				<MyApp store={store}>
-					{routes}
+					{routes()}
 				</MyApp>
 			</AppContainer>
 		</BrowserRouter>,
