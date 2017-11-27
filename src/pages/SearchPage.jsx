@@ -4,9 +4,8 @@ import {connect} from 'react-redux';
 import {doSearch, setQuery, setSearchType} from '../redux/actions';
 import Search from '../components/Search';
 import {Content} from '../components/Content';
-import {SortBy} from '../components/SortBy';
 
-class SearchPage extends React.Component {
+export class SearchPage extends React.Component {
     constructor(props) {
         super(props);
 
@@ -20,7 +19,6 @@ class SearchPage extends React.Component {
     }
 
     onChange(e) {
-        //todo: sorting?
         this.props.onQueryChange(e.target.value, this.props.query);
     }
 
@@ -54,7 +52,6 @@ class SearchPage extends React.Component {
                     ?
                     <div className="row">
                         <span className="counter">{this.props.movies.length} movies found</span>
-                        <SortBy/>
                     </div>
                     : ''
                 }
@@ -69,17 +66,12 @@ const mapStateToProps = state => ({
     oldValue: state.oldValue,
     movies: state.movies,
     selectedSearchType: state.selectedSearchType
-
-    /*sortType: state.results.sortType,
-    sortFields: state.results.sortFields,
-    isPending: state.results.isPending,*/
 });
 
 const mapDispatchToProps = dispatch => ({
     onSearch: (query, selectedSearchType) => dispatch(doSearch(query, selectedSearchType, dispatch)),
     onQueryChange: (query, oldQuery) => dispatch(setQuery(query, oldQuery)),
     onSearchTypeChange: selectedSearchType => dispatch(setSearchType(selectedSearchType)),
-    //onSortChange: type => dispatch(changeSort(type)),
 });
 
 const SearchPageConnected = withRouter(connect(mapStateToProps, mapDispatchToProps)(SearchPage));

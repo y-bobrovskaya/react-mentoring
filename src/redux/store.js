@@ -28,19 +28,11 @@ const initialState = {
     },
     movies: [],
     selectedSearchType: 'title',
-    sortType: 'releaseYear',
-    sortFields: [{id: 'releaseYear', caption: 'release date'}, {id: 'rating', caption: 'rating'}],
-    //isPending: false,
     query: '',
     oldValue: ''
 };
 
-const sortByField = (results, field) => (
-    [...results].sort((a, b) => b[field] - a[field])
-);
-
 const reducer = (state = initialState, action) => {
-    console.log("results ---- action ", action, state);
     switch (action.type) {
         case MOVIE_FETCH_SUCCESS:
             return {
@@ -55,10 +47,8 @@ const reducer = (state = initialState, action) => {
         case MOVIES_FETCH_SUCCESS:
             return {
                 ...state,
-                //oldValue: action.payload.query,
                 query: action.payload.query,
-                //isPending: false,
-                movies: sortByField(action.payload.results, state.sortType),
+                movies: action.payload.results,
             };
         case MOVIES_FETCH_FAILURE: {
             console.warn(action.payload);
@@ -77,7 +67,7 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 sortType: action.payload,
-                movies: sortByField(state.results, action.payload),
+                movies: state.results,
             };
         case QUERY_SET:
             return {
@@ -88,7 +78,7 @@ const reducer = (state = initialState, action) => {
         case QUERY_SET_TYPE:
             return {
                 ...state,
-                selectedSearchType: action.payload.selectedSearchType
+                selectedSearchType: action.payload
             };
         default:
             return state;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 
-function encodeIdAndTitle(movie) {
-	return `${movie.id}-${movie.title.toLowerCase().replace(/[:.]/g, '').replace(/ /g, '-')}`;
+function encodeIdAndTitle({id, title, name}) {
+	return `${id}-${(title || name).toLowerCase().replace(/[:.]/g, '').replace(/ /g, '-')}`;
 }
 
 export const Content = function(props) {

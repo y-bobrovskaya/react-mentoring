@@ -2,7 +2,6 @@ import React from 'react';
 
 export default class Search extends React.Component {
 	render() {
-		// todo: change on title/director
 		return (
 			<div>
 				<form onSubmit={this.props.onSubmit} className="search-form">
@@ -11,18 +10,18 @@ export default class Search extends React.Component {
 					<span>Search by</span>
 					<input type="radio"
 						name="searchType"
-						id="movie"
-						value="movie"
-						checked={this.props.selectedSearchType === 'movie'}
+						id="title"
+						value="title"
+						checked={this.props.selectedSearchType === 'title'}
 						onChange={this.props.onSearchTypeChange}/>
-					<label htmlFor="movie">Movie</label>
+					<label htmlFor="title">Title</label>
 					<input type="radio"
 						name="searchType"
-						id="tvshow"
-						value="tvshow"
-						checked={this.props.selectedSearchType === 'tvshow'}
+						id="director"
+						value="director"
+						checked={this.props.selectedSearchType === 'director'}
 						onChange={this.props.onSearchTypeChange}/>
-					<label htmlFor="tvshow">TV show</label>
+					<label htmlFor="director">Director</label>
 					<input type="submit" value="Submit"/>
 				</form>
 			</div>

@@ -15,6 +15,20 @@ const BASE_PARAMS = {
     language: 'en-US'
 };
 
+let stringify = function stringify(params) {
+	throw '=(';
+};
+
+if (process) {
+	stringify = function stringify(params) {
+		return require('querystring').stringify(params);
+	};
+} else if (window) {
+	stringify = function stringify(params) {
+		return new URLSearchParams(params).toString();
+	};
+}
+
 const MOVIE_DETAIL_URL = `${BASE_URL}/${VERSION}/${MOVIE_DETAIL_ENDPOINT}`;
 const PERSON_DETAIL_URL = `${BASE_URL}/${VERSION}/${PERSON_DETAIL_ENDPOINT}`;
 
@@ -22,12 +36,12 @@ const SEARCH_MOVIE_URL = `${BASE_URL}/${VERSION}/${SEARCH_MOVIE_ENDPOINT}`;
 const SEARCH_PERSON_URL = `${BASE_URL}/${VERSION}/${SEARCH_PERSON_ENDPOINT}`;
 
 function getUrlWithQuery(base, query) {
-    return `${base}?${new URLSearchParams({...BASE_PARAMS, query})}`;
+    return `${base}?${stringify({...BASE_PARAMS, query})}`;
 }
 function getUrlWithIdAndAdditions(base, id, additions) {
     let params = additions.length ? {...BASE_PARAMS, append_to_response: additions.join(',')} : {...BASE_PARAMS};
 
-    return `${base}/${id}?${new URLSearchParams(params)}`;
+    return `${base}/${id}?${stringify(params)}`;
 }
 
 export function getMovieDetailUrl(id, additions = []) {

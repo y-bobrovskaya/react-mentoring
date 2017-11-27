@@ -15,22 +15,38 @@ import {
 import axios from 'axios';
 
 import * as moviedb from '../client/api/moviedb';
-import { findMovieDirector } from '../client/api/helpers';
+import { findMovieDirector, getAllDirectedMovies } from '../client/api/helpers';
 
 export function doSearch(query, selectedSearchType, dispatch) {
     dispatch({type: MOVIES_FETCH});
 
-    let urlGetter = selectedSearchType.trim() === 'title' ? moviedb.getSearchMovieUrl : moviedb.getSearchPersonUrl;
+    let isByTitle = selectedSearchType.trim() === 'title';
 
-    return () => axios
-        .get(urlGetter(query))
-        .then(res => {
-            dispatch(moviesFetchSuccess(res.data.results, query));
-        })
-        .catch(err => {
-            console.trace(err);
-            dispatch(moviesFetchFailure(err.message || 'Can\'t load results'))
-        });
+		if (isByTitle) {
+			return () => axios
+				.get(moviedb.getSearchMovieUrl(query))
+				.then(res => {
+					dispatch(moviesFetchSuccess(res.data.results, query));
+				})
+				.catch(err => {
+					console.trace(err);
+					dispatch(moviesFetchFailure(err.message || 'Can\'t load results'))
+				});
+		} else {
+			return () => axios
+				.get(moviedb.getSearchPersonUrl(query))
+				.then(({data: {results: persons}}) => {
+					axios
+						.get(moviedb.getPersonDetailUrl(persons[0].id, ['movie_credits']))
+						.then(({data: director}) => {
+							dispatch(moviesFetchSuccess(getAllDirectedMovies(director), query));
+						})
+				})
+				.catch(err => {
+					console.trace(err);
+					dispatch(moviesFetchFailure(err.message || 'Can\'t load results'))
+				});
+		}
 }
 
 function moviesFetchSuccess(results, query) {
