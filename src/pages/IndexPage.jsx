@@ -1,49 +1,62 @@
 import React from 'react';
 import {withRouter} from 'react-router';
+import {connect} from 'react-redux';
+import {setQuery, setSearchType} from '../redux/actions';
 import Search from '../components/Search';
-import {Content} from '../components/Content';
 
-class IndexPage extends React.Component {
+export class IndexPage extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.onSubmit = this.onSubmit.bind(this);
 		this.onChange = this.onChange.bind(this);
 		this.onSearchTypeChange = this.onSearchTypeChange.bind(this);
-
-		this.state = {
-			value: this.props.match.params.query,
-			movies: [],
-			selectedSearchType: 'title'
-		};
 	}
 
 	onChange(e) {
-		this.setState({value: e.target.value});
+		this.props.onQueryChange(e.target.value, this.props.query);
 	}
 
 	onSearchTypeChange(e) {
-		this.setState({selectedSearchType: e.target.value});
+		this.props.onSearchTypeChange(e.target.value);
 	}
 
 	onSubmit(e) {
 		e.preventDefault();
-		this.props.history.push('/search/' + this.state.value);
+		this.props.history.push('/search/' + this.props.query);
 	}
 
 	render() {
 		let searchProps = {
-			value: this.state.value,
-			selectedSearchType: this.state.selectedSearchType
+			query: this.props.query,
+			selectedSearchType: this.props.selectedSearchType,
+			state: this.props
+		};
+
+		let searchHandlers = {
+			onChange: this.onChange,
+			onSearchTypeChange: this.onSearchTypeChange,
+			onSubmit: this.onSubmit
 		};
 
 		return (
 			<div>
-				<Search {...searchProps} onChange={this.onChange} onSearchTypeChange={this.onSearchTypeChange} onSubmit={this.onSubmit} />
-				<Content movies={this.state.movies} />
+				<Search {...searchProps} {...searchHandlers}/>
 			</div>
 		)
 	}
 }
 
-export default withRouter(IndexPage);
+const mapStateToProps = state => ({
+	query: state.query,
+	oldValue: state.oldValue,
+	selectedSearchType: state.selectedSearchType
+});
+
+const mapDispatchToProps = dispatch => ({
+	onQueryChange: (query, oldQuery) => dispatch(setQuery(query, oldQuery)),
+	onSearchTypeChange: selectedSearchType => dispatch(setSearchType(selectedSearchType)),
+});
+
+const IndexPageConnected = withRouter(connect(mapStateToProps, mapDispatchToProps)(IndexPage));
+export default IndexPageConnected;

@@ -6,7 +6,7 @@ export default class Search extends React.Component {
 			<div>
 				<form onSubmit={this.props.onSubmit} className="search-form">
 					<label htmlFor="search-field">Find your movie</label>
-					<input type="text" name="search-field" id="search-field" value={this.props.value} onChange={this.props.onChange}/>
+					<input type="text" name="search-field" id="search-field" value={this.props.query} onChange={this.props.onChange}/>
 					<span>Search by</span>
 					<input type="radio"
 						name="searchType"

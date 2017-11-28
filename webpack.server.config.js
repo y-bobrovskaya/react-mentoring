@@ -16,7 +16,7 @@ module.exports = {
 	context: path.resolve(__dirname, 'src'),
 	entry: './server/server',
 	output: {
-		filename: '[name].bundle.js',
+		filename: 'server.js',
 		path: path.resolve(__dirname, 'built'),
 	},
 	resolve: {

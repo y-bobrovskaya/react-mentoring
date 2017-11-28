@@ -1,58 +1,65 @@
 import React from 'react';
 import {withRouter} from 'react-router';
-import _ from 'lodash';
-import Movies from '../client/Movies';
-import { Movie } from '../components/Movie';
+import {connect} from 'react-redux';
+import {getMovieDetail} from '../redux/actions';
+import {Movie} from '../components/Movie';
 import {Content} from '../components/Content';
 
-class MoviePage extends React.Component {
-	constructor(props) {
-		super(props);
+import { findMovieDirector, getAllDirectedMovies } from '../client/api/helpers';
 
-		this.goSearch = this.goSearch.bind(this);
+export class MoviePage extends React.Component {
+    constructor(props) {
+        super(props);
 
-		this.state = {
-			value: this.props.match.params.title,
-			movie: {},
-			movies: []
-		};
+        this.goSearch = this.goSearch.bind(this);
+        this.loadMovie = this.loadMovie.bind(this);
 
-		this.findMovie(this.state.value);
+        if (this.props.match.params.title) {
+            this.loadMovie(this.props.match.params.title);
+        }
+    }
 
-	}
+    loadMovie(title) {
+        if (title) {
+            let [id, ...junk] = title.split('-');
 
-	findMovie(query) {
-		this.state.movie = _.find(Movies, function(movie) {
-			return movie.title == query;
-		});
+            this.props.getDetail(id);
+        }
+    }
 
-		if (this.state.movie.director) {
-			this.findSimilarMovies(this.state.movie.director);
-		}
-	}
+    goSearch(e) {
+        e.preventDefault();
+        this.props.history.push('/search');
+    }
 
-	findSimilarMovies(director) {
-		let movieId = this.state.movie.id;
+    componentWillUpdate(nextProps) {
+        if (nextProps.match.params.title !== this.props.match.params.title) {
+            this.loadMovie(nextProps.match.params.title);
+        }
+    }
 
-		this.state.movies = _.filter(Movies, function(movie) {
-			return movie.director == director && movie.id !== movieId;
-		});
-	}
+    componentDidUpdate() {
+        window.scrollTo(0, 0);
+    }
 
-	goSearch(e) {
-		e.preventDefault();
-		this.props.history.push('/');
-	}
-
-	render() {
-		return (
-			<div>
-				<Movie movie={this.state.movie} goSearch={this.goSearch} />
-				<div>Films by {this.state.movie.director}</div>
-				<Content movies={this.state.movies} />
-			</div>
-		)
-	}
+    render() {
+        return (
+            <div>
+                <Movie movie={this.props.movie} goSearch={this.goSearch}/>
+                <div>Films by {findMovieDirector(this.props.movie).name}</div>
+                <Content movies={getAllDirectedMovies(this.props.director)}/>
+            </div>
+        )
+    }
 }
 
-export default withRouter(MoviePage);
+const mapStateToProps = state => ({
+    movie: state.movie,
+    director: state.director
+});
+
+const mapDispatchToProps = dispatch => ({
+    getDetail: (id) => dispatch(getMovieDetail(id, dispatch))
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MoviePage));

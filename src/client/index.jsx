@@ -1,31 +1,33 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { AppContainer } from 'react-hot-loader';
-import { MyApp } from './app';
-import SearchPage from '../pages/SearchPage';
-import MoviePage from '../pages/MoviePage';
-import IndexPage from '../pages/IndexPage';
+import {createStoreInstance, initialState} from '../redux/store';
 
-const render = () => {
+import { MyApp } from './app';
+import routes from '../routes';
+
+const storeInstance = createStoreInstance(window.PRELOADED_STATE || initialState);
+delete window.PRELOADED_STATE;
+
+const render = (store) => {
 	ReactDom.render(
-		<Router>
+		<BrowserRouter>
 			<AppContainer>
-				<MyApp>
-					<Switch>
-						<Route exact path="/" component={IndexPage} />
-						<Route path="/search/:query" component={SearchPage} />
-						<Route path="/movie/:title" component={MoviePage} />
-					</Switch>
+				<MyApp store={store}>
+					{routes()}
 				</MyApp>
 			</AppContainer>
-		</Router>,
+		</BrowserRouter>,
 		document.getElementById('app')
 	)
 };
 
-render();
+render(storeInstance); // window.__PRELOADED_STATE__ || {} ?
 
 if (module.hot) {
-	module.hot.accept('./app', render);
+	module.hot.accept('./app', () => {
+		const NextApp = require('./app');
+		render(storeInstance);
+	  });
 }

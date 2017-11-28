@@ -15,7 +15,7 @@ module.exports = {
 	},
 
 	output: {
-		path: path.join(__dirname, "built"),
+		path: path.join(__dirname, 'built'),
 		filename: '[name].js',
 	},
 
@@ -31,6 +31,7 @@ module.exports = {
 
 	module: {
 		rules: [{
+			//test: /\.(js|jsx)$/,
 			test: /\.jsx?$/,
 			exclude: /node_modules/,
 			use: [
@@ -60,11 +61,11 @@ module.exports = {
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NamedModulesPlugin(),
 		new webpack.SourceMapDevToolPlugin({
-			filename: '[name].js.map',
-			exclude: ['vendor.js']
+			filename: '[name].js.map'
 		}),
 		new HtmlWebpackPlugin({
-			title: 'Test',
+			title: 'Redux Universal Example',
+			filename: 'index.html',
 			template: './index.html'
 		}),
 		new ExtractTextPlugin({
